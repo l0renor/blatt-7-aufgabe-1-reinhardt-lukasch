@@ -1,4 +1,5 @@
 #include "BinTree.h"
+#include <functional>
 
 using namespace ::std;
 
