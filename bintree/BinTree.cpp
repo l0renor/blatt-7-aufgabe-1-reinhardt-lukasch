@@ -8,7 +8,21 @@ using namespace ::std;
  *******************************************************************/
 
 bool BinTree::search(const int value) const {
+    rekSearch(value,root);
 
+}
+
+bool BinTree::rekSearch(const int value, Node* knoten) const {
+    if(knoten == nullptr){
+        return false;
+    }
+    if(knoten->key == value){
+        return true;
+    } else if(value < knoten->key){
+        return rekSearch(value,knoten->left);
+    } else {
+        return  rekSearch(value,knoten->right);
+    }
 }
 
 /********************************************************************
@@ -16,7 +30,31 @@ bool BinTree::search(const int value) const {
  *******************************************************************/
 
 void BinTree::insert(const int value) {
+if(root== nullptr){
+    root = new Node(value, nullptr, nullptr);
+    return;
+}
+    rekInsert(value,root);
+}
 
+void BinTree::rekInsert(const int value,Node* knoten) {
+if(value <knoten->key){
+    if(knoten->left == nullptr){
+        knoten->left = new Node(value, nullptr, nullptr);
+        return;
+    } else{
+        return rekInsert(value,knoten->left);
+    }
+}else if(value > knoten->key){
+    if(knoten->right == nullptr){
+        knoten->right = new Node(value, nullptr, nullptr);
+        return;
+    } else{
+        return rekInsert(value,knoten->right);
+    }
+} else{
+    return; // knoten == value schon vorhanden
+}
 }
 
 /********************************************************************
@@ -24,6 +62,24 @@ void BinTree::insert(const int value) {
  *******************************************************************/
 
 void BinTree::remove(const int value) {
+
+}
+
+void BinTree::rekRemove(const int value,Node* knoten) {
+
+    if(knoten == nullptr){
+        return;
+    }
+    if(knoten->key == value){
+        if((knoten->left == nullptr)&& knoten->left == nullptr ) {
+
+        }
+    } else if(value < knoten->key){
+        return rekRemove(value,knoten->left);
+    } else {
+        return  rekRemove(value,knoten->right);
+    }
+}
 
 }
 

@@ -24,6 +24,11 @@ private:
 
     Node *root = nullptr;
 
+    bool rekSearch(const int, Node*) const;
+
+    void rekInsert(const int, Node*);
+
+    void rekRemove(const int, Node*);
 public:
 
     ~BinTree();
