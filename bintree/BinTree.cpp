@@ -67,19 +67,26 @@ void BinTree::remove(const int value) {
 
 void BinTree::rekRemove(const int value,Node* knoten) {
 
-    if(knoten == nullptr){
-        return;
-    }
-    if(knoten->key == value){
-        if((knoten->left == nullptr)&& knoten->left == nullptr ) {
-
+    if(value <knoten->key){
+        if(knoten->left == nullptr){
+            return;
+        } else if(knoten->left->key == value){
+            if(knoten->left->left == nullptr && knoten->left->right == nullptr){
+                auto toRemove = knoten->left;
+                knoten->left == nullptr;
+                delete toRemove;
+            }
         }
-    } else if(value < knoten->key){
-        return rekRemove(value,knoten->left);
-    } else {
-        return  rekRemove(value,knoten->right);
+    }else if(value > knoten->key){
+        if(knoten->right == nullptr){
+            knoten->right = new Node(value, nullptr, nullptr);
+            return;
+        } else{
+            return rekInsert(value,knoten->right);
+        }
+    } else{
+        return; // knoten == value schon vorhanden
     }
-}
 
 }
 
