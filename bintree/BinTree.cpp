@@ -2,6 +2,19 @@
 #include <functional>
 
 using namespace ::std;
+BinTree::~BinTree(){
+recDestruct(root);
+}
+void BinTree::recDestruct(Node * knoten) {
+    if(knoten == nullptr){
+        return;
+    }
+    auto l = knoten->left;
+    auto r = knoten->right;
+    delete knoten;
+    recDestruct(l);
+    recDestruct(r);
+}
 
 /********************************************************************
  * Search
@@ -31,7 +44,7 @@ bool BinTree::rekSearch(const int value, Node* knoten) const {
 
 void BinTree::insert(const int value) {
 if(root== nullptr){
-    root = new Node(value, nullptr, nullptr);
+    root = new Node(value);
     return;
 }
     rekInsert(value,root);
@@ -47,7 +60,7 @@ if(value <knoten->key){
     }
 }else if(value > knoten->key){
     if(knoten->right == nullptr){
-        knoten->right = new Node(value, nullptr, nullptr);
+        knoten->right = new Node(value);
         return;
     } else{
         return rekInsert(value,knoten->right);
@@ -62,32 +75,157 @@ if(value <knoten->key){
  *******************************************************************/
 
 void BinTree::remove(const int value) {
-
-}
-
-void BinTree::rekRemove(const int value,Node* knoten) {
-
-    if(value <knoten->key){
-        if(knoten->left == nullptr){
+    if(root == nullptr){
+        return;
+    }
+    if(root->key = value){
+        auto knoten = root;
+        if (knoten->left == nullptr) {
             return;
-        } else if(knoten->left->key == value){
-            if(knoten->left->left == nullptr && knoten->left->right == nullptr){
+        } else if (knoten->left->key == value) { //links remove
+            if (knoten->left->left == nullptr && knoten->left->right == nullptr) {
                 auto toRemove = knoten->left;
                 knoten->left == nullptr;
                 delete toRemove;
+                return;
+            }
+            if (knoten->left->left == nullptr && knoten->left->right != nullptr) {
+                auto toRemove = knoten->left;
+                knoten->left = knoten->left->right;
+                delete toRemove;
+                return;
+            }
+            if (knoten->left->left != nullptr && knoten->left->right == nullptr) {
+                auto toRemove = knoten->left;
+                knoten->left = knoten->left->left;
+                delete toRemove;
+                return;
+            }
+            if (knoten->left->left != nullptr && knoten->left->right != nullptr) {
+                auto current = knoten->right;
+                auto prev = knoten;
+                while (current->left != nullptr) {
+
+                    prev = current;
+                    current = current->left;
+                }
+                if (current->right == nullptr) {
+                    knoten->key = current->key;
+                    delete current;
+                    return;
+
+                } else {
+                    knoten->key = current->key;
+                    prev->left = current->right;
+                    delete current;
+                    return;
+
+                }
             }
         }
-    }else if(value > knoten->key){
-        if(knoten->right == nullptr){
-            knoten->right = new Node(value, nullptr, nullptr);
-            return;
-        } else{
-            return rekInsert(value,knoten->right);
-        }
-    } else{
-        return; // knoten == value schon vorhanden
     }
 
+
+}
+
+
+
+
+void BinTree::rekRemove(const int value,Node* knoten) {
+
+    if (value < knoten->key) {
+        if (knoten->left == nullptr) {
+            return;
+        } else if (knoten->left->key == value) { //links remove
+            if (knoten->left->left == nullptr && knoten->left->right == nullptr) {
+                auto toRemove = knoten->left;
+                knoten->left == nullptr;
+                delete toRemove;
+                return;
+            }
+            if (knoten->left->left == nullptr && knoten->left->right != nullptr) {
+                auto toRemove = knoten->left;
+                knoten->left = knoten->left->right;
+                delete toRemove;
+                return;
+            }
+            if (knoten->left->left != nullptr && knoten->left->right == nullptr) {
+                auto toRemove = knoten->left;
+                knoten->left = knoten->left->left;
+                delete toRemove;
+                return;
+            }
+            if (knoten->left->left != nullptr && knoten->left->right != nullptr) {
+                auto current = knoten->right;
+                auto prev = knoten;
+                while (current->left != nullptr) {
+
+                    prev = current;
+                    current = current->left;
+                }
+                if (current->right == nullptr) {
+                    knoten->key = current->key;
+                    delete current;
+                    return;
+
+                } else {
+                    knoten->key = current->key;
+                    prev->left = current->right;
+                    delete current;
+                    return;
+
+                }
+            }
+            return rekRemove(value,knoten->left);
+        }
+    } else if (value > knoten->key) {
+        if (knoten->right == nullptr) {
+            return;
+        } else if (knoten->right->key == value) { //rechts remove
+            if (knoten->right->left == nullptr && knoten->right->right == nullptr) {
+                auto toRemove = knoten->right;
+                knoten->right == nullptr;
+                delete toRemove;
+                return;
+            }
+            if (knoten->right->left == nullptr && knoten->right->right != nullptr) {
+                auto toRemove = knoten->right;
+                knoten->right = knoten->right->right;
+                delete toRemove;
+                return;
+            }
+            if (knoten->right->left != nullptr && knoten->right->right == nullptr) {
+                auto toRemove = knoten->right;
+                knoten->right = knoten->right->left;
+                delete toRemove;
+                return;
+            }
+            if (knoten->right->left != nullptr && knoten->right->right != nullptr) {
+                auto current = knoten->right;
+                auto prev = knoten;
+                while (current->left != nullptr) {
+
+                    prev = current;
+                    current = current->left;
+                }
+                if (current->right == nullptr) {
+                    knoten->key = current->key;
+                    delete current;
+                    return;
+
+                } else {
+                    knoten->key = current->key;
+                    prev->left = current->right;
+                    delete current;
+                    return;
+
+                }
+            }
+            return rekRemove(value,knoten->right);
+        }
+
+
+    }
 }
 
 /********************************************************************

@@ -11,12 +11,15 @@ class BinTree {
 private:
 
     struct Node {
-        const int key;
+        int key;
         Node *left = nullptr;
         Node *right = nullptr;
-        Node(const int);
-        Node(const int, Node *, Node *);
-        ~Node();
+        Node(const int k){key = k;};
+        Node(const int k, Node *l, Node *r){key = k;left = l;right=r;};
+        ~Node(){
+            delete left;
+            delete  right;
+        };
         vector<int> *preorder() const;  // (Hauptreihenfolge)
         vector<int> *inorder() const;   // (Symmetrische Reihenfolge)
         vector<int> *postorder() const; // (Nebenreihenfolge)
@@ -29,6 +32,10 @@ private:
     void rekInsert(const int, Node*);
 
     void rekRemove(const int, Node*);
+
+    void symetricPre(Node*);
+
+    void recDestruct(Node*);
 public:
 
     ~BinTree();
