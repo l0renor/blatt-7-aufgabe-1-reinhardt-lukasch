@@ -3,18 +3,9 @@
 
 using namespace ::std;
 BinTree::~BinTree(){
-recDestruct(root);
+delete root;
 }
-void BinTree::recDestruct(Node * knoten) {
-    if(knoten == nullptr){
-        return;
-    }
-    auto l = knoten->left;
-    auto r = knoten->right;
-    delete knoten;
-    recDestruct(l);
-    recDestruct(r);
-}
+
 
 /********************************************************************
  * Search
@@ -79,50 +70,35 @@ void BinTree::remove(const int value) {
         return;
     }
     if(root->key = value){
-        auto knoten = root;
-        if (knoten->left == nullptr) {
-            return;
-        } else if (knoten->left->key == value) { //links remove
-            if (knoten->left->left == nullptr && knoten->left->right == nullptr) {
-                auto toRemove = knoten->left;
-                knoten->left == nullptr;
-                delete toRemove;
-                return;
-            }
-            if (knoten->left->left == nullptr && knoten->left->right != nullptr) {
-                auto toRemove = knoten->left;
-                knoten->left = knoten->left->right;
-                delete toRemove;
-                return;
-            }
-            if (knoten->left->left != nullptr && knoten->left->right == nullptr) {
-                auto toRemove = knoten->left;
-                knoten->left = knoten->left->left;
-                delete toRemove;
-                return;
-            }
-            if (knoten->left->left != nullptr && knoten->left->right != nullptr) {
-                auto current = knoten->right;
-                auto prev = knoten;
-                while (current->left != nullptr) {
-
-                    prev = current;
-                    current = current->left;
-                }
-                if (current->right == nullptr) {
-                    knoten->key = current->key;
-                    delete current;
-                    return;
-
-                } else {
-                    knoten->key = current->key;
-                    prev->left = current->right;
-                    delete current;
-                    return;
-
-                }
-            }
+        if(root->left == nullptr&&root->right == nullptr){
+            auto toDelete = root;
+            root = nullptr;
+            delete toDelete;
         }
+        if(root->left == nullptr){
+        auto toDelete = root;
+        root = root->right;
+        delete toDelete;
+    }
+        if(root->right == nullptr){
+            auto toDelete = root;
+            root = root->left;
+            delete toDelete;
+        }
+    auto current = root->right;
+        while(current->left != nullptr){
+            current = current->left;
+        }
+        auto tmp = current->key;
+        remove(tmp);
+        auto toDelete1 = current;
+        auto toDelete = root;
+        root = new Node(tmp,root->left,root->right);
+        delete toDelete;
+        delete toDelete1;
+    }
+    if(value < root->key){
+        rekRemove(value,root->left,root);
     }
 
 
@@ -131,7 +107,7 @@ void BinTree::remove(const int value) {
 
 
 
-void BinTree::rekRemove(const int value,Node* knoten) {
+void BinTree::rekRemove(const int value,Node* knoten,Node* parent) {
 
     if (value < knoten->key) {
         if (knoten->left == nullptr) {

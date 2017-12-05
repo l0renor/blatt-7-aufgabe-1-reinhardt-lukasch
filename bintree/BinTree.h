@@ -17,8 +17,13 @@ private:
         Node(const int k){key = k;};
         Node(const int k, Node *l, Node *r){key = k;left = l;right=r;};
         ~Node(){
-            delete left;
-            delete  right;
+            if(left!= nullptr){
+                delete left;
+            }
+            if(right!= nullptr){
+                delete  right;
+            }
+
         };
         vector<int> *preorder() const;  // (Hauptreihenfolge)
         vector<int> *inorder() const;   // (Symmetrische Reihenfolge)
@@ -31,7 +36,7 @@ private:
 
     void rekInsert(const int, Node*);
 
-    void rekRemove(const int, Node*);
+    void rekRemove(const int, Node*,Node*);
 
     void symetricPre(Node*);
 
