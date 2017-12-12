@@ -1,5 +1,7 @@
 language: cpp
 
+compiler: gcc
+
 addons:
   apt:
     packages:
@@ -7,7 +9,4 @@ addons:
       - cmake
 
 script:
-  - mkdir build'
-  - cd build'
-  - cmake ..
-  - make
+  cmake CMakeLists.txt && make && make test
