@@ -5,8 +5,10 @@ using namespace ::std;
 
 AVLTree::Node::Node(const int k) : key(k) {}
 
-AVLTree::Node::Node(const int k, Node *l, Node *r)
-        : key(k), left(l), right(r) {}
+AVLTree::Node::Node(const int k, Node *p) : key(k),parent(p) {}
+
+AVLTree::Node::Node(const int k, Node *l, Node *r, Node *p)
+        : key(k), left(l), right(r), parent(p){}
 
 AVLTree::Node::~Node() {
     delete left;
@@ -48,8 +50,11 @@ void AVLTree::Node::insert(int value) {
         return;
 
     if (value < key) {
-        if (left == nullptr)
-            left = new Node(value);
+         if(balance = 1){
+             left = new Node(value);
+         }
+
+        }
         else
             left->insert(value);
     }

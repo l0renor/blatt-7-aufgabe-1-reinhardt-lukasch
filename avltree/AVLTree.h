@@ -12,12 +12,13 @@ private:
 
     struct Node {
         const int key;
-        int balance;
+        int balance = 0;
         Node *left = nullptr;
         Node *right = nullptr;
         Node *parent = nullptr;
         Node(const int);
-        Node(const int, Node *, Node *);
+        Node(const int, Node*);
+        Node(const int, Node *, Node *,Node *);
         ~Node();
         bool search(const int) const;
         void insert(const int);
