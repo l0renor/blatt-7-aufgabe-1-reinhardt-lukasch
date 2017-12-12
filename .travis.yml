@@ -1,7 +1,12 @@
 language: cpp
 
+compiler: gcc
+
 addons:
   apt:
     packages:
       - cmake-data
-      - cmake
+      - cmake-3.9.6
+
+script:
+  cmake CMakeLists.txt && make && make test
