@@ -2,7 +2,7 @@
 #include <fstream>
 #include <sstream>
 
-#include "BinTree.h"
+#include "AVLTree.h"
 
 using namespace std;
 
@@ -10,7 +10,7 @@ template<typename T>
 ostream &operator<<(ostream &out, const vector<T> &v);
 
 int main(int argc, const char *argv[]) {
-    auto treeToPng = [](BinTree *tree) {
+    auto treeToPng = [](AVLTree *tree) {
         ofstream myfile;
         myfile.open("tree.dot");
         myfile << *tree;
@@ -18,7 +18,7 @@ int main(int argc, const char *argv[]) {
         system("dot -Tpng tree.dot -o tree.png");
     };
     int val;
-    BinTree *tree = new BinTree();
+    AVLTree *tree = new AVLTree();
     for (int i = 1; i < argc; i++) {
         std::istringstream iss(argv[i]);
         iss >> val;

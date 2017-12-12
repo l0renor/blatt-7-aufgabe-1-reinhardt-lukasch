@@ -3,9 +3,9 @@
 
 #include "gtest/gtest.h"
 #include "gmock/gmock.h"
-#include "bintree/BinTree.h"
+#include "bintree/AVLTree.h"
 
-class BinTreeTest : public ::testing::Test {
+class AVLTreeTest : public ::testing::Test {
 };
 
 #endif //ARRAYLIST_TESTLIST_H

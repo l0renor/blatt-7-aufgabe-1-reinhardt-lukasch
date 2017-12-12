@@ -1,12 +1,12 @@
-#include "testBinTree.h"
+#include "testAVLTree.h"
 #include <memory>
 
 using namespace std;
 
 // empty tree
 
-TEST(BinTreeTest, Empty_Tree) {
-    BinTree b;
+TEST(AVLTreeTest, Empty_Tree) {
+    AVLTree b;
     EXPECT_EQ(nullptr, b.preorder());
     EXPECT_EQ(nullptr, b.inorder());
     EXPECT_EQ(nullptr, b.postorder());
@@ -14,8 +14,8 @@ TEST(BinTreeTest, Empty_Tree) {
 
 // insert and search
 
-TEST(BinTreeTest, One_Node) {
-    BinTree b;
+TEST(AVLTreeTest, One_Node) {
+    AVLTree b;
     b.insert(12213);
     EXPECT_TRUE(b.search(12213));
     EXPECT_FALSE(b.search(123));
@@ -25,8 +25,8 @@ TEST(BinTreeTest, One_Node) {
     EXPECT_THAT(*b.postorder(), testing::ElementsAre(12213));
 }
 
-TEST(BinTreeTest, Two_Nodes) {
-    BinTree b;
+TEST(AVLTreeTest, Two_Nodes) {
+    AVLTree b;
     b.insert(12213);
     b.insert(215);
     EXPECT_TRUE(b.search(12213));
@@ -36,8 +36,8 @@ TEST(BinTreeTest, Two_Nodes) {
     EXPECT_THAT(*b.postorder(), testing::ElementsAre(215, 12213));
 }
 
-TEST(BinTreeTest, Three_Nodes) {
-    BinTree b;
+TEST(AVLTreeTest, Three_Nodes) {
+    AVLTree b;
     b.insert(12213);
     b.insert(215);
     b.insert(123712);
@@ -51,8 +51,8 @@ TEST(BinTreeTest, Three_Nodes) {
 
 // insert, remove and search
 
-TEST(BinTreeTest, One_Node_Insert_Remove) {
-    BinTree b;
+TEST(AVLTreeTest, One_Node_Insert_Remove) {
+    AVLTree b;
     b.insert(12213);
     EXPECT_TRUE(b.search(12213));
     EXPECT_FALSE(b.search(123));
@@ -67,8 +67,8 @@ TEST(BinTreeTest, One_Node_Insert_Remove) {
     EXPECT_EQ(nullptr, b.postorder());
 }
 
-TEST(BinTreeTest, Two_Nodes_Insert_Remove) {
-    BinTree b;
+TEST(AVLTreeTest, Two_Nodes_Insert_Remove) {
+    AVLTree b;
     b.insert(12213);
     b.insert(215);
     EXPECT_TRUE(b.search(12213));
@@ -91,8 +91,8 @@ TEST(BinTreeTest, Two_Nodes_Insert_Remove) {
 
 
 
-TEST(BinTreeTest, Three_Nodes_Insert_Remove_Big_Tree) {
-    BinTree b;
+TEST(AVLTreeTest, Three_Nodes_Insert_Remove_Big_Tree) {
+    AVLTree b;
     b.insert(250);
     b.insert(270);
     b.insert(200);

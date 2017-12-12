@@ -1,14 +1,14 @@
 cmake_minimum_required(VERSION 3.7)
-project(BinTree)
+project(avltree)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_subdirectory(bintree)
+add_subdirectory(avltree)
 
 set(SOURCE_FILES main.cpp)
 add_executable(Main ${SOURCE_FILES})
 
-target_link_libraries(Main LINK_PUBLIC bintree)
+target_link_libraries(Main LINK_PUBLIC avltree)
 
 # GoogleTest
 
@@ -39,4 +39,4 @@ add_subdirectory(test)
 
 enable_testing()
 
-add_test(testBinTree test/testBinTree --gtest_output=xml:report.xml)
+add_test(testAVLTree test/testAVLTree --gtest_output=xml:report.xml)
