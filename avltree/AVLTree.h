@@ -17,7 +17,7 @@ private:
         Node *right = nullptr;
         Node *parent = nullptr;
         Node(const int);
-        Node(const int, Node *, Node *,);
+        Node(const int, Node *, Node *);
         ~Node();
         bool search(const int) const;
         void insert(const int);
