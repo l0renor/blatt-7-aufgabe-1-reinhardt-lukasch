@@ -50,20 +50,50 @@ void AVLTree::Node::insert(int value) {
         return;
 
     if (value < key) {
-         if(balance = 1){
+         if(left == nullptr){
              left = new Node(value);
+             if(balance == 0)
+                     upin(this);
+             } else left->insert(value);
          }
 
-        }
-        else
-            left->insert(value);
-    }
 
     if (value > key) {
-        if (right == nullptr)
+        if (right == nullptr) {
             right = new Node(value);
+            if (balance == 0)
+                upin(this);
+        }
         else right->insert(value);
     }
+}
+
+void AVLTree::Node::upin(Node *child){
+    if(parent == nullptr){
+        return;
+    }
+    if(child == left){
+        if(balance == 1)
+            balance =0;
+        if (balance == 0)
+            balance ==1;
+        if(balance == -1)
+            rotateRight();
+    }
+
+}
+
+void AVLTree::Node::rotateRight(){
+    if (parent->left == this){
+        parent->left =left;
+    }
+    else {
+        parent->right = left;
+    }
+    auto tmp = left;
+    left = left->right;
+    tmp->right = this;
+
 }
 
 /********************************************************************

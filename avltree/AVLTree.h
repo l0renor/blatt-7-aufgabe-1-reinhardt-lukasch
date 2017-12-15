@@ -22,6 +22,8 @@ private:
         ~Node();
         bool search(const int) const;
         void insert(const int);
+        void upin(Node *);
+        void rotateRight();
         Node *remove(const int);
         vector<int> *preorder() const; // (Hauptreihenfolge)
         vector<int> *inorder() const; // (Symmetrische Reihenfolge)
