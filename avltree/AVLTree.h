@@ -21,9 +21,12 @@ private:
         Node(const int, Node *, Node *,Node *);
         ~Node();
         bool search(const int) const;
-        void insert(const int);
-        void upin(Node *);
-        void rotateRight();
+        void insert(const int,AVLTree *);
+        void upin(AVLTree *);
+        void rotateRight(AVLTree*);
+
+        void rotateLeft(AVLTree*);
+
         Node *remove(const int);
         vector<int> *preorder() const; // (Hauptreihenfolge)
         vector<int> *inorder() const; // (Symmetrische Reihenfolge)
@@ -41,6 +44,8 @@ public:
     void insert(const int);
 
     void remove(const int);
+
+
 
     vector<int> *preorder() const; // (Hauptreihenfolge)
     vector<int> *inorder() const; // (Symmetrische Reihenfolge)

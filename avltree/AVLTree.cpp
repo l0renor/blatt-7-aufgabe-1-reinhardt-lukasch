@@ -42,59 +42,124 @@ void AVLTree::insert(int value) {
     if (root == nullptr)
         root = new Node(value);
     else
-        root->insert(value);
+        root->insert(value,this);
 }
 
-void AVLTree::Node::insert(int value) {
+void AVLTree::Node::insert(int value, AVLTree *tree) {
     if (value == key)
         return;
 
     if (value < key) {
          if(left == nullptr){
-             left = new Node(value);
+             left = new Node(value,this);
              if(balance == 0)
-                     upin(this);
-             } else left->insert(value);
+                 balance = -1;
+                 upin(tree);
+             } else left->insert(value,tree);
          }
 
 
     if (value > key) {
         if (right == nullptr) {
-            right = new Node(value);
+            right = new Node(value,this);
+
             if (balance == 0)
-                upin(this);
+                balance = 1;
+                upin(tree);
         }
-        else right->insert(value);
+        else right->insert(value,tree);
     }
 }
 
-void AVLTree::Node::upin(Node *child){
+void AVLTree::Node::upin(AVLTree* tree) {
     if(parent == nullptr){
         return;
     }
-    if(child == left){
-        if(balance == 1)
-            balance =0;
-        if (balance == 0)
-            balance ==1;
-        if(balance == -1)
-            rotateRight();
+    if(this == parent->left){
+        if(parent->balance == 1)
+            parent->balance =0;
+        if (parent->balance == 0){
+            parent->balance = -1;
+            parent->upin(tree);
+        }
+
+        if(parent->balance == -1){
+            if(balance == -1){
+                parent->rotateRight(tree);
+            } else if(balance = 1) {
+                auto p = parent;
+                rotateLeft(tree);
+                p->rotateRight(tree);
+            }
+        }
+    } else {
+        if(parent->balance == -1) {
+            parent->balance = 0;
+            return;
+        }
+        if (parent->balance == 0){
+            parent->balance =1;
+            parent->upin(tree);
+            return;
+        }
+
+        if(parent->balance == 1){
+                if(balance == 1){
+                    parent->rotateLeft(tree);
+                } else if(balance = -1) {
+                    auto p = parent;
+                    rotateRight(tree);
+                    p->rotateLeft(tree);
+                }
+        }
+
     }
 
 }
 
-void AVLTree::Node::rotateRight(){
-    if (parent->left == this){
-        parent->left =left;
+void AVLTree::Node::rotateRight(AVLTree *tree){
+    auto x = left;
+    if(this == tree->root ){
+        tree->root = x;
+    } else if (parent->left == this){
+        parent->left = x;
     }
     else {
-        parent->right = left;
+        parent->right = x;
     }
-    auto tmp = left;
+    x->balance = 0;
+    balance = 0;
     left = left->right;
-    tmp->right = this;
+    if(left != nullptr)
+        left->parent = this;
+    x->right = this;
+    x->parent = parent;
+    parent = x;
 
 }
+
+void AVLTree::Node::rotateLeft(AVLTree *tree){
+
+    auto x = right;
+    if(this == tree->root){
+        tree->root = x;
+    }
+    if (parent->left == this){
+        parent->left =x;
+    }
+    else {
+        parent->right = x;
+    }
+    x->balance  = 0;
+    balance = 0;
+
+    right = right->left;
+    x->left = this;
+    x->parent = parent;
+    parent = x;
+
+}
+
 
 /********************************************************************
  * Remove
@@ -126,7 +191,7 @@ void AVLTree::remove(const int value) {
                 root->right = root->right->remove(symSucc->key);
                 toDeleteNode->left = nullptr;
                 toDeleteNode->right = nullptr;
-                root = new Node(symSucc->key, root->left, root->right);
+                root = new Node(symSucc->key, root->left, root->right, nullptr);
                 delete toDeleteNode;
             }
             toDelete->left = nullptr;
@@ -173,7 +238,7 @@ AVLTree::Node *AVLTree::Node::remove(const int value) {
         if (right == nullptr)
             return left;
         auto symSucc = findSymSucc(this);
-        return new Node(symSucc->key, left, right->remove(symSucc->key));
+        return new Node(symSucc->key, left, right->remove(symSucc->key),parent);
     }
     // code should not be reached, just to make the compiler happy
     return nullptr;
