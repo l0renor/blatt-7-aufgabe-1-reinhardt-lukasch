@@ -91,15 +91,47 @@ TEST(AVLTreeTest, Two_Nodes_Insert_Remove) {
 }
 */
 
-
-
-TEST(AVLTreeTest, Three_Nodes_Insert_Remove_Big_Tree) {
+TEST(AVLTreeTest, Insert_only_smaller) {
     AVLTree b;
     b.insert(250);
-    b.insert(220);
+    b.insert(240);
+    b.insert(230);
     b.insert(210);
-    b.insert(190);
+    b.insert(200);
+    b.insert(100);
+    EXPECT_THAT(*b.inorder(), testing::ElementsAre(100, 200, 210, 230 , 240 ,250));
+
+
+
+
+
+    // EXPECT_THAT(*b.preorder(), testing::ElementsAre(250,130, 100,203,270));
+}
+
+TEST(AVLTreeTest, Insert_only_bigger) {
+    AVLTree b;
+    b.insert(250);
+    b.insert(270);
+    b.insert(280);
+    b.insert(300);
+    b.insert(350);
     b.insert(400);
 
+
    // EXPECT_THAT(*b.preorder(), testing::ElementsAre(250,130, 100,203,270));
+}
+
+TEST(AVLTreeTest, doubleRotate) {
+    AVLTree b;
+    b.insert(250);
+    b.insert(270);
+    b.insert(280);
+    b.insert(300);
+    b.insert(350);
+ //   b.insert(400);
+    b.insert(269);
+    b.insert(269);
+
+
+    // EXPECT_THAT(*b.preorder(), testing::ElementsAre(250,130, 100,203,270));
 }
