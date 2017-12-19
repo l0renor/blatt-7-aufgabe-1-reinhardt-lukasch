@@ -78,12 +78,11 @@ void AVLTree::Node::upin(AVLTree* tree) {
     if(this == parent->left){
         if(parent->balance == 1)
             parent->balance =0;
-        if (parent->balance == 0){
+        else if (parent->balance == 0){
             parent->balance = -1;
             parent->upin(tree);
         }
-
-        if(parent->balance == -1){
+        else if(parent->balance == -1){
             if(balance == -1){
                 parent->rotateRight(tree);
             } else if(balance = 1) {

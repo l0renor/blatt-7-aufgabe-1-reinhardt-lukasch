@@ -99,6 +99,10 @@ TEST(AVLTreeTest, Insert_only_smaller) {
     b.insert(210);
     b.insert(200);
     b.insert(100);
+    EXPECT_THAT(*b.inorder(), testing::ElementsAre(100, 200, 210, 230 , 240 ,250));
+
+
+
 
 
     // EXPECT_THAT(*b.preorder(), testing::ElementsAre(250,130, 100,203,270));
