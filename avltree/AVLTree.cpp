@@ -178,7 +178,8 @@ AVLTree::Node *findSymSucc(AVLTree::Node *node) {
 void AVLTree::remove(const int value) {
     if (root != nullptr) {
         if (root->key == value) {
-            auto toDelete = root;
+            //TODO Wenn key = value
+            /*auto toDelete = root;
             if (root->left == nullptr && root->right == nullptr) {
                 root = nullptr;
             } else if (root->left == nullptr) {
@@ -196,7 +197,7 @@ void AVLTree::remove(const int value) {
             }
             toDelete->left = nullptr;
             toDelete->right = nullptr;
-            delete toDelete;
+            delete toDelete;*/
         } else
             root->remove(value);
     }
@@ -212,6 +213,7 @@ AVLTree::Node *AVLTree::Node::remove(const int value) {
                 toDelete->left = nullptr;
                 toDelete->right = nullptr;
                 delete toDelete;
+
             }
         }
         return this;
