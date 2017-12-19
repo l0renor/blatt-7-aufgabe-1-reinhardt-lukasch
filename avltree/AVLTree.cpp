@@ -144,7 +144,7 @@ void AVLTree::Node::rotateLeft(AVLTree *tree){
     if(this == tree->root){
         tree->root = x;
     }
-    if (parent->left == this){
+    else if (parent->left == this){
         parent->left =x;
     }
     else {
