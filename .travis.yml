@@ -1,8 +1,5 @@
 language: cpp
 
-compiler:
-  - gcc
-  - clang
+compiler: gcc
 
-script:
-  cmake CMakeLists.txt && make && make test
+script: cmake CMakeLists.txt && make && make test
