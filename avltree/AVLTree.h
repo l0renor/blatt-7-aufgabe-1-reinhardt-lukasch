@@ -31,6 +31,7 @@ private:
         vector<int> *preorder() const; // (Hauptreihenfolge)
         vector<int> *inorder() const; // (Symmetrische Reihenfolge)
         vector<int> *postorder() const; // (Nebenreihenfolge)
+        vector<int> *inorderBalance() const; // testing
     };
 
     Node *root = nullptr;
@@ -50,6 +51,7 @@ public:
     vector<int> *preorder() const; // (Hauptreihenfolge)
     vector<int> *inorder() const; // (Symmetrische Reihenfolge)
     vector<int> *postorder() const; // (Nebenreihenfolge)
+    vector<int> *inorderBalance() const; // testing
 
     friend Node *findSymSucc(Node *);
     friend ostream &operator<<(ostream &, const AVLTree &);

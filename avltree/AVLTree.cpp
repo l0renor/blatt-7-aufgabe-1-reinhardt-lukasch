@@ -52,9 +52,13 @@ void AVLTree::Node::insert(int value, AVLTree *tree) {
     if (value < key) {
          if(left == nullptr){
              left = new Node(value,this);
-             if(balance == 0)
+             if(balance == 0) {
                  balance = -1;
                  upin(tree);
+             } else {
+                 balance = 0;
+             }
+
              } else left->insert(value,tree);
          }
 
@@ -63,9 +67,14 @@ void AVLTree::Node::insert(int value, AVLTree *tree) {
         if (right == nullptr) {
             right = new Node(value,this);
 
-            if (balance == 0)
+            if (balance == 0) {
                 balance = 1;
                 upin(tree);
+            } else {
+                balance = 0;
+            }
+
+
         }
         else right->insert(value,tree);
     }
@@ -89,6 +98,7 @@ void AVLTree::Node::upin(AVLTree* tree) {
                 auto p = parent;
                 rotateLeft(tree);
                 p->rotateRight(tree);
+                balance = -1;
             }
         }
     } else {
@@ -109,6 +119,7 @@ void AVLTree::Node::upin(AVLTree* tree) {
                     auto p = parent;
                     rotateRight(tree);
                     p->rotateLeft(tree);
+                    balance = 1;
                 }
         }
 
@@ -318,9 +329,32 @@ vector<int> *AVLTree::Node::postorder() const {
     return vec;
 }
 
+vector<int> *AVLTree::inorderBalance() const {
+    if (root == nullptr)
+        return nullptr;
+    return root->inorderBalance();
+}
+
+vector<int> *AVLTree::Node::inorderBalance() const {
+    auto vec = new vector<int>();
+    // linken Nachfolger in vec
+    if (left != nullptr) {
+        auto left_vec = left->inorderBalance();
+        vec->insert(vec->end(), left_vec->begin(), left_vec->end());
+    }
+    // Wurzel in vec
+    vec->push_back(balance);
+    // rechten Nachfolger in vec
+    if (right != nullptr) {
+        auto right_vec = right->inorderBalance();
+        vec->insert(vec->end(), right_vec->begin(), right_vec->end());
+    }
+    return vec;
+}
 /********************************************************************
  * operator<<
  *******************************************************************/
+
 std::ostream &operator<<(std::ostream &os, const AVLTree &tree) {
     function<void(std::ostream &, const int, const AVLTree::Node *, const string)> printToOs
             = [&](std::ostream &os, const int value, const AVLTree::Node *node, const string l) {
