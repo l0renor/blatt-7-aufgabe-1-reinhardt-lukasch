@@ -2,11 +2,15 @@
 #include "AVLTree.h"
 
 using namespace ::std;
-
+/// \param k key of the node
 AVLTree::Node::Node(const int k) : key(k) {}
-
+/// \param k key of the node
+/// \param p parent of the node
 AVLTree::Node::Node(const int k, Node *p) : key(k),parent(p) {}
-
+/// \param k key of the node
+/// \param p parent of the node
+/// \param l left child of the node
+/// \param r right child of the node
 AVLTree::Node::Node(const int k, Node *l, Node *r, Node *p)
         : key(k), left(l), right(r), parent(p){}
 
@@ -22,12 +26,15 @@ AVLTree::~AVLTree() {
 /********************************************************************
  * Search
  *******************************************************************/
+/// \param value value which schould be searched
+/// \returns whether given value is present in the tree
 bool AVLTree::search(const int value) const {
     if (root == nullptr)
         return false;
     return root->search(value);
 }
-
+/// \param value value which is searched
+/// \returns whether given value is present in the tree
 bool AVLTree::Node::search(const int value) const {
     if (value == key) return true;
     if (value < key && left != nullptr) return left->search(value);
@@ -38,13 +45,16 @@ bool AVLTree::Node::search(const int value) const {
 /********************************************************************
  * Insert
  *******************************************************************/
+
+/// \param value value to be inserted
 void AVLTree::insert(int value) {
     if (root == nullptr)
         root = new Node(value);
     else
         root->insert(value,this);
 }
-
+/// \param value value to be inserted
+/// \param tree passes on the tree in case the root needs to be changed
 void AVLTree::Node::insert(int value, AVLTree *tree) {
     if (value == key)
         return;
@@ -79,7 +89,7 @@ void AVLTree::Node::insert(int value, AVLTree *tree) {
         else right->insert(value,tree);
     }
 }
-
+/// \param tree passes on the tree in case the root needs to be changed
 void AVLTree::Node::upin(AVLTree* tree) {
     if(parent == nullptr){
         return;
@@ -126,7 +136,7 @@ void AVLTree::Node::upin(AVLTree* tree) {
     }
 
 }
-
+/// \param tree passes on the tree in case the root needs to be changed
 void AVLTree::Node::rotateRight(AVLTree *tree){
     auto x = left;
     if(this == tree->root ){
@@ -147,7 +157,7 @@ void AVLTree::Node::rotateRight(AVLTree *tree){
     parent = x;
 
 }
-
+/// \param tree passes on the tree in case the root needs to be changed
 void AVLTree::Node::rotateLeft(AVLTree *tree){
 
     auto x = right;
@@ -174,7 +184,7 @@ void AVLTree::Node::rotateLeft(AVLTree *tree){
 /********************************************************************
  * Remove
  *******************************************************************/
-
+/// \param node node of which the successor should be looked for
 AVLTree::Node *findSymSucc(AVLTree::Node *node) {
     if (node->right == nullptr)
         return nullptr;
