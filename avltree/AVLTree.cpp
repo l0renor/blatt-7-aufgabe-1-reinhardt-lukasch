@@ -316,12 +316,34 @@ AVLTree::Node *AVLTree::Node::remove(const int value, AVLTree *tree) {
 }
 
 void AVLTree::Node::upout(AVLTree* tree) {
+    if (parent == nullptr) {
+        return;
+    }
+
     if (parent->left->key == key) {
         // Node is left successor of parent
+
         if(parent->balance = -1) {
             parent->balance = 0;
-            parent.upout()
+            parent->upout(tree);
+        } else if (parent->balance = 0) {
+            parent->balance = 1;
+        } else {
+            // Parent's balance must be 1
+            if (parent->right->balance = 0) {
+                parent->rotateLeft(tree);
+            } else if (parent->right->balance = 1) {
+                auto r = parent->right;
+                rotateLeft(tree);
+                r->upout(tree);
+            } else {
+                // Right brothers balance must be -1
+
+            }
         }
+    } else {
+        // Node is right successor of parent
+
     }
 
 }
