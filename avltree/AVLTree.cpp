@@ -219,16 +219,16 @@ void AVLTree::remove(const int value) {
             toDelete->right = nullptr;
             delete toDelete;*/
         } else
-            root->remove(value);
+            root->remove(value, this);
     }
 }
 
-AVLTree::Node *AVLTree::Node::remove(const int value) {
+AVLTree::Node *AVLTree::Node::remove(const int value, AVLTree *tree) {
 
     if (value < key) {
         if (left != nullptr) {
             auto toDelete = left;
-            left = left->remove(value);
+            left = left->remove(value, tree);
             if (toDelete->key == value) {
                 toDelete->left = nullptr;
                 toDelete->right = nullptr;
@@ -242,7 +242,7 @@ AVLTree::Node *AVLTree::Node::remove(const int value) {
     if (value > key) {
         if (right != nullptr) {
             auto toDelete = right;
-            right = right->remove(value);
+            right = right->remove(value, tree);
             if (toDelete->key == value) {
                 toDelete->left = nullptr;
                 toDelete->right = nullptr;
@@ -262,7 +262,7 @@ AVLTree::Node *AVLTree::Node::remove(const int value) {
                 if (parent->right == nullptr) {
                     // Parent has height 0
                     parent->balance = 0;
-                    upout();
+                    upout(tree);
                 } else if (parent->right->right != nullptr && parent->right->left != nullptr) {
                     // Parent has height 1
                     parent->balance = 1;
@@ -277,7 +277,7 @@ AVLTree::Node *AVLTree::Node::remove(const int value) {
                 if (parent->left == nullptr) {
                     // Parent has height 0
                     parent->balance = 0;
-                    upout();
+                    upout(tree);
                 } else if (parent->left->left == nullptr && parent->left->right == nullptr) {
                     // Parent has height 1
                     parent->balance = 1;
@@ -294,7 +294,7 @@ AVLTree::Node *AVLTree::Node::remove(const int value) {
             } else {
                 // parent.right = right
             }
-            upout();
+            upout(tree);
         } else if (right == nullptr) {
             // Right successor is a leaf
 
@@ -303,19 +303,27 @@ AVLTree::Node *AVLTree::Node::remove(const int value) {
             } else {
                 // parent.right = left
             }
-            upout();
+            upout(tree);
         } else {
             // Both successors are nodes
 
             auto symSucc = findSymSucc(this);
-            return new Node(symSucc->key, left, right->remove(symSucc->key), parent);
+            return new Node(symSucc->key, left, right->remove(symSucc->key, tree), parent);
         }
-
-        //auto symSucc = findSymSucc(this);
-        //return new Node(symSucc->key, left, right->remove(symSucc->key),parent);
     }
     // code should not be reached, just to make the compiler happy
     return nullptr;
+}
+
+void AVLTree::Node::upout(AVLTree* tree) {
+    if (parent->left->key == key) {
+        // Node is left successor of parent
+        if(parent->balance = -1) {
+            parent->balance = 0;
+            parent.upout()
+        }
+    }
+
 }
 
 /********************************************************************

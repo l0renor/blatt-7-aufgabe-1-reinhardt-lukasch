@@ -34,16 +34,18 @@ private:
         /// recursive seach method implemented in the node
         bool search(const int) const;
         /// recursive insert method implemented in the node
-        void insert(const int,AVLTree *);
-        /// recursive  method to make shure the tree is still balanced after an insert
+        void insert(const int, AVLTree *);
+        /// recursive  method to make sure the tree is still balanced after an insert
         void upin(AVLTree *);
         ///right rotation around this node
         void rotateRight(AVLTree*);
         ///left rotation around this node
         void rotateLeft(AVLTree*);
         /// recursive remove method implemented in the node
-        Node *remove(const int);
-        /// recursive remove method implemented in the node
+        Node *remove(const int, AVLTree *);
+        /// recursive method to make sure the tree is still balanced after remove
+        void upout(AVLTree *);
+
         vector<int> *preorder() const; // (Hauptreihenfolge)
         vector<int> *inorder() const; // (Symmetrische Reihenfolge)
         vector<int> *postorder() const; // (Nebenreihenfolge)
