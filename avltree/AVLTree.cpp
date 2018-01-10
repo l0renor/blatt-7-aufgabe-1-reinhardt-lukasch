@@ -253,14 +253,66 @@ AVLTree::Node *AVLTree::Node::remove(const int value) {
     }
 
     if (key == value) {
-        if (left == nullptr && right == nullptr)
-            return nullptr;
-        if (left == nullptr)
-            return right;
-        if (right == nullptr)
-            return left;
-        auto symSucc = findSymSucc(this);
-        return new Node(symSucc->key, left, right->remove(symSucc->key),parent);
+        if (left == nullptr && right == nullptr) {
+            // Both successors are leafs
+
+            if (parent->left->key == key) {
+                // Node is left successor of parent
+
+                if (parent->right == nullptr) {
+                    // Parent has height 0
+                    parent->balance = 0;
+                    upout();
+                } else if (parent->right->right != nullptr && parent->right->left != nullptr) {
+                    // Parent has height 1
+                    parent->balance = 1;
+                } else {
+                    // Parent has height 2
+                    //TODO Rotation zum Ausgleichen & upout()
+
+                }
+            } else {
+                // Node is right successor of parent
+
+                if (parent->left == nullptr) {
+                    // Parent has height 0
+                    parent->balance = 0;
+                    upout();
+                } else if (parent->left->left == nullptr && parent->left->right == nullptr) {
+                    // Parent has height 1
+                    parent->balance = 1;
+                } else {
+                    // Parent has height 2
+                    //TODO Rotation zum Ausgleich & upout()
+                }
+            }
+        } else if (left == nullptr) {
+            // Left successor is a leaf
+
+            if (parent->left->key == key) {
+                // parent.left = right
+            } else {
+                // parent.right = right
+            }
+            upout();
+        } else if (right == nullptr) {
+            // Right successor is a leaf
+
+            if (parent->left->key == key) {
+                // parent.left = left
+            } else {
+                // parent.right = left
+            }
+            upout();
+        } else {
+            // Both successors are nodes
+
+            auto symSucc = findSymSucc(this);
+            return new Node(symSucc->key, left, right->remove(symSucc->key), parent);
+        }
+
+        //auto symSucc = findSymSucc(this);
+        //return new Node(symSucc->key, left, right->remove(symSucc->key),parent);
     }
     // code should not be reached, just to make the compiler happy
     return nullptr;
