@@ -227,7 +227,7 @@ TEST(AVLTreeTest, Remove_upoutTest2) {
     avlTree.remove(7);
     EXPECT_FALSE(avlTree.search(7));
     EXPECT_THAT(*avlTree.inorder(), testing::ElementsAre(15, 30, 40, 70, 85, 100, 120,150));
-    EXPECT_THAT(*avlTree.preorder(), testing::ElementsAre(70,30,15,7,40,100,85,150));
-    EXPECT_THAT(*avlTree.postorder(), testing::ElementsAre(15, 40, 30, 85, 150, 100, 70));
-    EXPECT_THAT(*avlTree.inorderBalance(), testing::ElementsAre(0,0,0,1,1,0,0));
+    EXPECT_THAT(*avlTree.preorder(), testing::ElementsAre(70,30,15,40,100,85,150,120));
+    EXPECT_THAT(*avlTree.postorder(), testing::ElementsAre(15, 40, 30, 85,120 ,150, 100, 70));
+    EXPECT_THAT(*avlTree.inorderBalance(), testing::ElementsAre(0,0,0,1,0,1,0,-1));
 }
