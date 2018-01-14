@@ -115,12 +115,12 @@ void AVLTree::Node::upin(AVLTree* tree) {
                 p->rotateRight(tree);
                 if (t == 1) {
                     balance = -1;
-                    parent->right->balance == 0;
+                    parent->right->balance = 0;
                 } else if (t == -1){
                     balance = 1;
-                    parent->right->balance == 0;
+                    parent->right->balance = 0;
                 }else{
-                    balance == 0;
+                    balance = 0;
                 }
             }
         }
@@ -152,6 +152,8 @@ void AVLTree::Node::upin(AVLTree* tree) {
                     } else if (t == -1){
                         balance = 1;
                         parent->right->balance == 0;
+                    } else{
+                        balance =0;
                     }
                 }
         }

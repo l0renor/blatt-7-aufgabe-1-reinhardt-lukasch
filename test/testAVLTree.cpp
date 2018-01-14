@@ -49,47 +49,6 @@ TEST(AVLTreeTest, Three_Nodes) {
     EXPECT_THAT(*avlTree.inorder(), testing::ElementsAre(215, 12213, 123712));
     EXPECT_THAT(*avlTree.postorder(), testing::ElementsAre(215, 123712, 12213));
 }
-/*
-// insert, remove and search
-
-TEST(AVLTreeTest, One_Node_Insert_Remove) {
-    AVLTree b;
-    b.insert(12213);
-    EXPECT_TRUE(b.search(12213));
-    EXPECT_FALSE(b.search(123));
-    EXPECT_FALSE(b.search(-123));
-    EXPECT_THAT(*b.preorder(), testing::ElementsAre(12213));
-    EXPECT_THAT(*b.inorder(), testing::ElementsAre(12213));
-    EXPECT_THAT(*b.postorder(), testing::ElementsAre(12213));
-    b.remove(12213);
-    EXPECT_FALSE(b.search(12213));
-    EXPECT_EQ(nullptr, b.preorder());
-    EXPECT_EQ(nullptr, b.inorder());
-    EXPECT_EQ(nullptr, b.postorder());
-}
-
-TEST(AVLTreeTest, Two_Nodes_Insert_Remove) {
-    AVLTree b;
-    b.insert(12213);
-    b.insert(215);
-    EXPECT_TRUE(b.search(12213));
-    EXPECT_TRUE(b.search(215));
-    EXPECT_THAT(*b.preorder(), testing::ElementsAre(12213, 215));
-    EXPECT_THAT(*b.inorder(), testing::ElementsAre(215, 12213));
-    EXPECT_THAT(*b.postorder(), testing::ElementsAre(215, 12213));
-    b.remove(12213);
-    EXPECT_FALSE(b.search(12213));
-    EXPECT_TRUE(b.search(215));
-    EXPECT_THAT(*b.preorder(), testing::ElementsAre(215));
-    EXPECT_THAT(*b.inorder(), testing::ElementsAre(215));
-    EXPECT_THAT(*b.postorder(), testing::ElementsAre(215));
-    b.remove(215);
-    EXPECT_FALSE(b.search(215));
-    EXPECT_EQ(nullptr, b.preorder());
-    EXPECT_EQ(nullptr, b.inorder());
-    EXPECT_EQ(nullptr, b.postorder());
-}
-*/
 
 TEST(AVLTreeTest, Insert_only_smaller) {
     AVLTree avlTree;
@@ -173,6 +132,29 @@ TEST(AVLTreeTest, doubleRotateRLt2t3empty) {
 }
 // insert, remove
 
+TEST(AVLTreeTest, RemoveOnlyNode ) {
+    AVLTree avlTree;
+    avlTree.insert(470);
+    avlTree.remove(470);
+    EXPECT_FALSE(avlTree.search(470));
+    EXPECT_EQ(avlTree.preorder(), nullptr);
+    EXPECT_EQ(avlTree.inorder(), nullptr);
+    EXPECT_EQ(avlTree.postorder(), nullptr);
+}
+
+TEST(AVLTreeTest, RemoveNOrotation ) {
+    AVLTree avlTree;
+    avlTree.insert(450);
+    avlTree.insert(400);
+    avlTree.insert(500);
+    avlTree.insert(470);
+    avlTree.remove(470);
+    EXPECT_THAT(*avlTree.inorder(), testing::ElementsAre(400,450,500));
+    EXPECT_THAT(*avlTree.preorder(), testing::ElementsAre(450,400,500));
+    EXPECT_THAT(*avlTree.postorder(), testing::ElementsAre(400,500,450));
+    EXPECT_THAT(*avlTree.inorderBalance(), testing::ElementsAre(0,0,0));
+}
+
 TEST(AVLTreeTest, RemoveLRrotation ) {
     AVLTree avlTree;
     avlTree.insert(500);
@@ -183,5 +165,18 @@ TEST(AVLTreeTest, RemoveLRrotation ) {
     EXPECT_THAT(*avlTree.inorder(), testing::ElementsAre(400,450,500));
     EXPECT_THAT(*avlTree.preorder(), testing::ElementsAre(450,400,500));
     EXPECT_THAT(*avlTree.postorder(), testing::ElementsAre(400,500,450));
+    EXPECT_THAT(*avlTree.inorderBalance(), testing::ElementsAre(0,0,0));
+}
+
+TEST(AVLTreeTest, RemoveRLrotation ) {
+    AVLTree avlTree;
+    avlTree.insert(450);
+    avlTree.insert(400);
+    avlTree.insert(500);
+    avlTree.insert(470);
+    avlTree.remove(400);
+    EXPECT_THAT(*avlTree.inorder(), testing::ElementsAre(450,470,500));
+    EXPECT_THAT(*avlTree.preorder(), testing::ElementsAre(470,450,500));
+    EXPECT_THAT(*avlTree.postorder(), testing::ElementsAre(450,500,470));
     EXPECT_THAT(*avlTree.inorderBalance(), testing::ElementsAre(0,0,0));
 }
