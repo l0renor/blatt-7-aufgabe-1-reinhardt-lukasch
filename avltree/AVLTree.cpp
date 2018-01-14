@@ -151,7 +151,7 @@ void AVLTree::Node::upin(AVLTree* tree) {
                         parent->left->balance = -1;
                     } else if (t == -1){
                         balance = 1;
-                        parent->right->balance = 0;
+                        parent->left->balance = 0;
                     } else{
                         balance = 0;
                     }
