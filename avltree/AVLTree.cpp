@@ -101,14 +101,27 @@ void AVLTree::Node::upin(AVLTree* tree) {
             parent->balance = -1;
             parent->upin(tree);
         }
-        else if(parent->balance == -1){
-            if(balance == -1){
+        else if(parent->balance == -1) {
+            if (balance == -1) {
                 parent->rotateRight(tree);
-            } else if(balance = 1) {
+            } else if (balance == 1) {
+                int t;
+                if(right != nullptr){
+                    t = right->balance;
+                }
+
                 auto p = parent;
                 rotateLeft(tree);
                 p->rotateRight(tree);
-                balance = -1;
+                if (t == 1) {
+                    balance = -1;
+                    parent->right->balance == 0;
+                } else if (t == -1){
+                    balance = 1;
+                    parent->right->balance == 0;
+                }else{
+                    balance == 0;
+                }
             }
         }
     } else {
@@ -125,11 +138,21 @@ void AVLTree::Node::upin(AVLTree* tree) {
         if(parent->balance == 1){
                 if(balance == 1){
                     parent->rotateLeft(tree);
-                } else if(balance = -1) {
+                } else if(balance == -1) {
+                    int t;
+                    if(left != nullptr){
+                        t = left->balance;
+                    }
                     auto p = parent;
                     rotateRight(tree);
                     p->rotateLeft(tree);
-                    balance = 1;
+                    if (t == 1) {
+                        balance = 0;
+                        parent->left->balance == -1;
+                    } else if (t == -1){
+                        balance = 1;
+                        parent->right->balance == 0;
+                    }
                 }
         }
 
