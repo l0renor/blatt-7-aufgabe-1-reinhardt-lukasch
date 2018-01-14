@@ -231,8 +231,17 @@ void AVLTree::remove(const int value) {
                 root = root->left;
             else {
                 auto symSucc = findSymSucc(root);
-                root->right->remove(symSucc->key, this);
-                root = new Node(symSucc->key, root->left, root->right, nullptr);
+                if (symSucc == root->right) {
+                    root = new Node(symSucc->key, root->left, nullptr, nullptr);
+                    root->balance = -1;
+                    root->left->upout(this);
+                } else {
+                    root->right->remove(symSucc->key, this);
+                    int bal = root->balance;
+                    root = new Node(symSucc->key, root->left, root->right, nullptr);
+                    root->balance = bal;
+                    root->right->upout(this);
+                }
             }
         } else
             root->remove(value, this);
@@ -268,7 +277,7 @@ void AVLTree::Node::remove(const int value, AVLTree *tree) {
                     parent->left = nullptr;
                     parent->upout(tree);
                     return;
-                } else if (parent->right->right != nullptr && parent->right->left != nullptr) {
+                } else if (parent->right->right == nullptr && parent->right->left == nullptr) {
                     // Right brother has height 1
                     parent->balance = 1;
                     parent->left = nullptr;
@@ -278,15 +287,25 @@ void AVLTree::Node::remove(const int value, AVLTree *tree) {
                     parent->left = nullptr;
                     parent->balance = 1;
                     if (parent->right->right != nullptr && parent->right->left != nullptr) {
-                        parent->rotateLeft(tree);
-                    } else if (parent->right->left == nullptr) {
+                        auto p = parent;
                         auto r = parent->right;
                         parent->rotateLeft(tree);
+                        p->balance = 1;
+                        r->balance = -1;
+                    } else if (parent->right->left == nullptr) {
+                        auto p = parent;
+                        auto r = parent->right;
+                        parent->rotateLeft(tree);
+                        p->balance = 0;
+                        r->balance = 0;
                         r->upout(tree);
                     } else {
                         auto rl = parent->right->left;
                         parent->right->rotateRight(tree);
                         parent->rotateLeft(tree);
+                        rl->balance = 0;
+                        rl->right->balance = 0;
+                        rl->left->balance = 0;
                         rl->upout(tree);
                     }
                 }
@@ -309,17 +328,27 @@ void AVLTree::Node::remove(const int value, AVLTree *tree) {
                     parent->balance = -1;
                     if (parent->left->left != nullptr && parent->left->right != nullptr) {
                         // 2 childs
-                        parent->rotateRight(tree);
-                    } else if (parent->left->right == nullptr) {
-                        // Only left child
+                        auto p = parent;
                         auto l = parent->left;
                         parent->rotateRight(tree);
+                        p->balance = -1;
+                        l->balance = 1;
+                    } else if (parent->left->right == nullptr) {
+                        // Only left child
+                        auto p = parent;
+                        auto l = parent->left;
+                        parent->rotateRight(tree);
+                        l->balance = 0;
+                        p->balance = 0;
                         l->upout(tree);
                     } else {
                         // Only right child
                         auto lr = parent->left->right;
                         parent->left->rotateLeft(tree);
                         parent->rotateRight(tree);
+                        lr->balance = 0;
+                        lr->right->balance = 0;
+                        lr->left->balance = 0;
                         lr->upout(tree);
                     }
                 }
@@ -355,11 +384,25 @@ void AVLTree::Node::remove(const int value, AVLTree *tree) {
         } else {
             // Both successors are nodes
             auto symSucc = findSymSucc(this);
-            right->remove(symSucc->key, tree);
-            if(parent->left->key == key) {
+            if (symSucc == right) {
+                symSucc->balance = -1;
+                right = nullptr;
+            } else {
+                symSucc->balance = balance;
+            }
+
+            if (parent->left->key == key) {
                 parent->left = new Node(symSucc->key, left, right, parent);
+                parent->left->balance = symSucc->balance;
+                if(parent->left->right != nullptr) {
+                    parent->left->right->upout(tree);
+                }
             } else {
                 parent->right = new Node(symSucc->key, left, right, parent);
+                parent->right->balance = symSucc->balance;
+                if (parent->right->right != nullptr) {
+                    parent->right->right->upout(tree);
+                }
             }
         }
     }
@@ -381,7 +424,11 @@ void AVLTree::Node::upout(AVLTree* tree) {
         } else {
             // Parent's balance must be 1
             if (parent->right->balance == 0) {
+                auto p = parent;
+                auto r = parent->right;
                 parent->rotateLeft(tree);
+                p->balance = 1;
+                r->balance = -1;
             } else if (parent->right->balance == 1) {
                 auto r = parent->right;
                 rotateLeft(tree);
@@ -406,7 +453,11 @@ void AVLTree::Node::upout(AVLTree* tree) {
         } else {
             // Parent's balance must be -1
             if(parent->left->balance == 0) {
+                auto p = parent;
+                auto l = parent->left;
                 parent->rotateRight(tree);
+                p->balance = -1;
+                l->balance = 1;
             } else if (parent->left->balance == -1) {
                 auto l = parent->left;
                 rotateLeft(tree);
