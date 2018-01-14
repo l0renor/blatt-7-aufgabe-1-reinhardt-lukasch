@@ -223,33 +223,20 @@ void AVLTree::remove(const int value) {
     }
 }
 
-AVLTree::Node *AVLTree::Node::remove(const int value, AVLTree *tree) {
+void AVLTree::Node::remove(const int value, AVLTree *tree) {
 
     if (value < key) {
         if (left != nullptr) {
-            auto toDelete = left;
-            left = left->remove(value, tree);
-            if (toDelete->key == value) {
-                toDelete->left = nullptr;
-                toDelete->right = nullptr;
-                delete toDelete;
-            }
+            left->remove(value, tree);
         }
-        return this;
     }
 
     if (value > key) {
         if (right != nullptr) {
-            auto toDelete = right;
-            right = right->remove(value, tree);
-            if (toDelete->key == value) {
-                toDelete->left = nullptr;
-                toDelete->right = nullptr;
-                delete toDelete;
-            }
+            right->remove(value, tree);
         }
-        return this;
     }
+
 
     if (key == value) {
         if (left == nullptr && right == nullptr) {
@@ -259,61 +246,85 @@ AVLTree::Node *AVLTree::Node::remove(const int value, AVLTree *tree) {
                 // Node is left successor of parent
 
                 if (parent->right == nullptr) {
-                    // Parent has height 0
+                    // Right brother has height 0
                     parent->balance = 0;
-                    tree->upoutNode = parent;
+                    parent->left = nullptr;
+                    parent->upout(tree);
+                    return;
                 } else if (parent->right->right != nullptr && parent->right->left != nullptr) {
-                    // Parent has height 1
+                    // Right brother has height 1
                     parent->balance = 1;
+                    parent->left = nullptr;
+                    return;
                 } else {
-                    // Parent has height 2
-                    //TODO Rotation zum Ausgleichen & upout()
-
+                    parent->left = nullptr;
+                    parent->balance = 1;
+                    // Right brother has height 2
+                    if (parent->right->right != nullptr && parent->right->left != nullptr) {
+                        parent->rotateLeft(tree);
+                    } else if (parent->right->left == nullptr) {
+                        auto r = parent->right;
+                        parent->rotateLeft(tree);
+                        r->upout(tree);
+                    } else {
+                        auto r = parent->right;
+                        auto rl = r->left;
+                        parent->rotateLeft(tree);
+                        r->rotateLeft(tree);
+                        rl->upout(tree);
+                    }
                 }
             } else {
                 // Node is right successor of parent
 
                 if (parent->left == nullptr) {
-                    // Parent has height 0
+                    // Left brother has height 0
                     parent->balance = 0;
-                    tree->upoutNode = parent;
+                    parent->right = nullptr;
+                    parent->upout(tree);
+                    return;
                 } else if (parent->left->left == nullptr && parent->left->right == nullptr) {
-                    // Parent has height 1
+                    // Left brother has height 1
                     parent->balance = 1;
+                    parent->right = nullptr;
                 } else {
-                    // Parent has height 2
-                    //TODO Rotation zum Ausgleich & upout()
+                    // Left brother has height 2
                 }
             }
-            return this;
         } else if (left == nullptr) {
             // Left successor is a leaf
 
             if (parent->left->key == key) {
-                // parent.left = right
+                parent->left = right;
+                return;
             } else {
-                // parent.right = right
+                parent->right = right;
+                return;
             }
-            tree->upoutNode = parent;
-            return this;
         } else if (right == nullptr) {
             // Right successor is a leaf
 
             if (parent->left->key == key) {
-                // parent.left = left
+                parent->left = left;
+                return;
             } else {
-                // parent.right = left
+                parent->right = left;
+                return;
             }
-            tree->upoutNode = parent;
-            return this;
         } else {
             // Both successors are nodes
             auto symSucc = findSymSucc(this);
-            return new Node(symSucc->key, left, right->remove(symSucc->key, tree), parent);
+            if(parent->left->key == key) {
+                right->remove(symSucc->key, tree);
+                parent->left = new Node(symSucc->key, left, right, parent);
+                return;
+            } else {
+                left->remove(symSucc->key, tree);
+                parent->right = new Node(symSucc->key, left, right, parent);
+                return;
+            }
         }
     }
-    // code should not be reached, just to make the compiler happy
-    return nullptr;
 }
 
 void AVLTree::Node::upout(AVLTree* tree) {
