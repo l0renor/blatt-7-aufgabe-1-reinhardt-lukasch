@@ -148,12 +148,12 @@ void AVLTree::Node::upin(AVLTree* tree) {
                     p->rotateLeft(tree);
                     if (t == 1) {
                         balance = 0;
-                        parent->left->balance == -1;
+                        parent->left->balance = -1;
                     } else if (t == -1){
                         balance = 1;
-                        parent->right->balance == 0;
+                        parent->right->balance = 0;
                     } else{
-                        balance =0;
+                        balance = 0;
                     }
                 }
         }
@@ -284,10 +284,9 @@ void AVLTree::Node::remove(const int value, AVLTree *tree) {
                         parent->rotateLeft(tree);
                         r->upout(tree);
                     } else {
-                        auto r = parent->right;
-                        auto rl = r->left;
+                        auto rl = parent->right->left;
+                        parent->right->rotateRight(tree);
                         parent->rotateLeft(tree);
-                        r->rotateLeft(tree);
                         rl->upout(tree);
                     }
                 }
@@ -318,10 +317,9 @@ void AVLTree::Node::remove(const int value, AVLTree *tree) {
                         l->upout(tree);
                     } else {
                         // Only right child
-                        auto l = parent->left;
-                        auto lr = l->right;
+                        auto lr = parent->left->right;
+                        parent->left->rotateLeft(tree);
                         parent->rotateRight(tree);
-                        l->rotateRight(tree);
                         lr->upout(tree);
                     }
                 }

@@ -57,11 +57,11 @@ private:
 public:
 
     ~AVLTree();
-
+    /// Searches for node in the tree
     bool search(const int) const;
-
+    /// Inserts a new node to the tree
     void insert(const int);
-
+    /// Removes node from tree
     void remove(const int);
 
 
