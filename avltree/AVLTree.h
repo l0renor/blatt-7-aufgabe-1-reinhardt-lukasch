@@ -42,7 +42,7 @@ private:
         ///left rotation around this node
         void rotateLeft(AVLTree*);
         /// recursive remove method implemented in the node
-        Node *remove(const int, AVLTree *);
+        void remove(const int, AVLTree *);
         /// recursive method to make sure the tree is still balanced after remove
         void upout(AVLTree *);
 
@@ -53,7 +53,6 @@ private:
     };
 
     Node *root = nullptr;
-    Node *upoutNode = nullptr;
 
 public:
 
