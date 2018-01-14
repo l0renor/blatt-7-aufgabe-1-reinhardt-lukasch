@@ -219,12 +219,10 @@ AVLTree::Node *findSymSucc(AVLTree::Node *node) {
     }
     return result;
 }
-
+/// \param value value of the node to remove
 void AVLTree::remove(const int value) {
     if (root != nullptr) {
         if (root->key == value) {
-            //TODO Wenn key = value
-            /*auto toDelete = root;
             if (root->left == nullptr && root->right == nullptr) {
                 root = nullptr;
             } else if (root->left == nullptr) {
@@ -233,21 +231,15 @@ void AVLTree::remove(const int value) {
                 root = root->left;
             else {
                 auto symSucc = findSymSucc(root);
-                auto toDeleteNode = symSucc;
-                root->right = root->right->remove(symSucc->key);
-                toDeleteNode->left = nullptr;
-                toDeleteNode->right = nullptr;
+                root->right->remove(symSucc->key, this);
                 root = new Node(symSucc->key, root->left, root->right, nullptr);
-                delete toDeleteNode;
             }
-            toDelete->left = nullptr;
-            toDelete->right = nullptr;
-            delete toDelete;*/
         } else
             root->remove(value, this);
     }
 }
-
+/// \param value value of the node to remove
+/// \param tree passes on the tree in case the root needs to be changed
 void AVLTree::Node::remove(const int value, AVLTree *tree) {
 
     if (value < key) {
@@ -365,14 +357,11 @@ void AVLTree::Node::remove(const int value, AVLTree *tree) {
         } else {
             // Both successors are nodes
             auto symSucc = findSymSucc(this);
+            right->remove(symSucc->key, tree);
             if(parent->left->key == key) {
-                right->remove(symSucc->key, tree);
                 parent->left = new Node(symSucc->key, left, right, parent);
-                return;
             } else {
-                left->remove(symSucc->key, tree);
                 parent->right = new Node(symSucc->key, left, right, parent);
-                return;
             }
         }
     }
