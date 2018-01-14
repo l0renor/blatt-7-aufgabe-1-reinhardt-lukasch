@@ -58,10 +58,10 @@ TEST(AVLTreeTest, Insert_only_smaller) {
     avlTree.insert(210);
     avlTree.insert(200);
     avlTree.insert(100);
-    EXPECT_THAT(*avlTree.inorder(), testing::ElementsAre(100, 200, 210, 230, 240, 250));
-    EXPECT_THAT(*avlTree.preorder(), testing::ElementsAre(210, 200, 100, 240, 230, 250));
-    EXPECT_THAT(*avlTree.postorder(), testing::ElementsAre(100, 200, 230, 250, 240, 210));
-    EXPECT_THAT(*avlTree.inorderBalance(), testing::ElementsAre(0, -1, 0, 0, 0, 0));
+    EXPECT_THAT(*avlTree.inorder(), testing::ElementsAre(100, 200, 210, 230 , 240 ,250));
+    EXPECT_THAT(*avlTree.preorder(), testing::ElementsAre(210, 200, 100, 240 , 230 ,250));
+    EXPECT_THAT(*avlTree.postorder(), testing::ElementsAre(100, 200, 230 , 250 ,240, 210));
+    EXPECT_THAT(*avlTree.inorderBalance(), testing::ElementsAre(0, -1, 0, 0 , 0 ,0));
 
 }
 
@@ -73,10 +73,10 @@ TEST(AVLTreeTest, Insert_only_bigger) {
     avlTree.insert(300);
     avlTree.insert(350);
     avlTree.insert(400);
-    EXPECT_THAT(*avlTree.inorder(), testing::ElementsAre(250, 270, 280, 300, 350, 400));
-    EXPECT_THAT(*avlTree.preorder(), testing::ElementsAre(300, 270, 250, 280, 350, 400));
-    EXPECT_THAT(*avlTree.postorder(), testing::ElementsAre(250, 280, 270, 400, 350, 300));
-    EXPECT_THAT(*avlTree.inorderBalance(), testing::ElementsAre(0, 0, 0, 0, 1, 0));
+    EXPECT_THAT(*avlTree.inorder(), testing::ElementsAre(250, 270, 280, 300 , 350 ,400));
+    EXPECT_THAT(*avlTree.preorder(), testing::ElementsAre(300, 270, 250, 280 , 350, 400));
+    EXPECT_THAT(*avlTree.postorder(), testing::ElementsAre(250, 280, 270 , 400 ,350, 300));
+    EXPECT_THAT(*avlTree.inorderBalance(), testing::ElementsAre(0, 0, 0, 0 , 1,0));
 
 }
 
@@ -208,9 +208,9 @@ TEST(AVLTreeTest, Remove_upoutTest) {
     avlTree.remove(7);
     EXPECT_FALSE(avlTree.search(7));
     EXPECT_THAT(*avlTree.inorder(), testing::ElementsAre(15, 30, 40, 70, 85, 100, 150));
-    EXPECT_THAT(*avlTree.preorder(), testing::ElementsAre(70, 30, 15, 40, 100, 85, 150));
+    EXPECT_THAT(*avlTree.preorder(), testing::ElementsAre(70,30,15,40,100,85,150));
     EXPECT_THAT(*avlTree.postorder(), testing::ElementsAre(15, 40, 30, 85, 150, 100, 70));
-    EXPECT_THAT(*avlTree.inorderBalance(), testing::ElementsAre(0, 0, 0, 0, 0, 0, 0));
+    EXPECT_THAT(*avlTree.inorderBalance(), testing::ElementsAre(0,0,0,0,0,0,0));
 }
 
 TEST(AVLTreeTest, Remove_upoutTest2) {
