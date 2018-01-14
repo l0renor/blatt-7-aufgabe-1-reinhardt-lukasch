@@ -53,6 +53,7 @@ private:
     };
 
     Node *root = nullptr;
+    Node *upoutNode = nullptr;
 
 public:
 
